@@ -1,15 +1,17 @@
 <template>
   <div
-    class="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 flex"
+    class="w-full min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 flex"
   >
-    <!-- Sidebar remains the same -->
-    <aside class="w-64 bg-white shadow-lg p-6 flex flex-col">
-      <h2 class="text-2xl font-extrabold mb-8 text-indigo-700 tracking-wide">
+    <aside
+      class="bg-white shadow-lg p-6 flex flex-col transform transition-transform duration-300"
+    >
+      <h2
+        class="text-1xl font-extrabold mb-8 text-indigo-700 tracking-wide mx-auto"
+      >
         Support Portal
       </h2>
-      <nav class="flex flex-col space-y-5 text-black font-bold">
+      <nav class="flex flex-col space-y-5 text-black font-bold mx-auto">
         <a href="#" class="hover:text-pink-600 transition">Dashboard</a>
-        <a href="#" class="hover:text-pink-600 transition">Settings</a>
         <button
           @click="downloadTicketsCSV"
           class="mt-6 text-blue-600 hover:underline"
@@ -20,16 +22,16 @@
     </aside>
 
     <!-- Main Content -->
-    <main class="flex-1 p-10 relative">
+    <main class="flex-1 p-4 relative">
       <header class="flex justify-between items-center mb-10">
-        <h1 class="text-4xl font-bold text-indigo-900">
-          Welcome,
+        <h1 class="text-2xl font-bold text-indigo-900">
+          Welcome, Agent
           <span class="text-pink-600">{{ user.name || "Loading..." }}</span>
-          (Agent)
+        
         </h1>
         <button
           @click="logout"
-          class="px-5 py-2 rounded-lg bg-pink-600 hover:bg-pink-700 text-white font-semibold shadow-md"
+          class="px-2 py-1 rounded-lg bg-pink-600 hover:bg-pink-700 text-white font-semibold shadow-md"
         >
           Logout
         </button>
@@ -61,36 +63,36 @@
 
       <!-- Tickets Table -->
       <section v-else>
-        <h2 class="text-3xl font-semibold text-indigo-800 mb-6">All Tickets</h2>
+        <h2 class="text-2xl font-semibold text-indigo-800 mb-6">All Tickets</h2>
         <div
           v-if="tickets?.length"
-          class="bg-white rounded-lg shadow overflow-hidden"
+          class="bg-white rounded-lg shadow w-full p-2"
         >
           <table class="min-w-full divide-y divide-gray-200">
             <thead class="bg-indigo-50">
               <tr>
                 <th
-                  class="px-6 py-3 text-left text-xs font-medium text-indigo-700 uppercase tracking-wider"
+                  class="px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider"
                 >
                   Title
                 </th>
                 <th
-                  class="px-6 py-3 text-left text-xs font-medium text-indigo-700 uppercase tracking-wider"
+                  class="px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider"
                 >
                   Status
                 </th>
                 <th
-                  class="px-6 py-3 text-left text-xs font-medium text-indigo-700 uppercase tracking-wider"
+                  class="px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider"
                 >
                   Assigned To
                 </th>
                 <th
-                  class="px-6 py-3 text-left text-xs font-medium text-indigo-700 uppercase tracking-wider"
+                  class="px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider"
                 >
                   Comments
                 </th>
                 <th
-                  class="px-6 py-3 text-left text-xs font-medium text-indigo-700 uppercase tracking-wider"
+                  class="px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider"
                 >
                   Actions
                 </th>
@@ -102,12 +104,12 @@
                 :key="ticket.id"
                 :class="ticket.assignedTo ? 'bg-green-50' : 'bg-red-50'"
               >
-                <td class="px-6 py-4 whitespace-nowrap">
+                <td class="px-3 py-3 whitespace-nowrap">
                   <div class="text-sm font-medium text-gray-900">
                     {{ ticket.title }}
                   </div>
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap">
+                <td class="px-3 py-3 whitespace-nowrap">
                   <span
                     class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full"
                     :class="{
@@ -120,7 +122,7 @@
                     {{ ticket.status }}
                   </span>
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap">
+                <td class="px-3 py-3 whitespace-nowrap">
                   <div class="text-sm text-gray-900">
                     {{
                       ticket.status === "in_progress"
@@ -129,7 +131,7 @@
                     }}
                   </div>
                 </td>
-                <td class="px-6 py-4">
+                <td class="px-3 py-3">
                   <div
                     class="text-sm text-gray-900 max-w-xs max-h-20 overflow-y-auto"
                   >
@@ -153,7 +155,7 @@
                     </ul>
                   </div>
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                <td class="px-3 py-4 whitespace-nowrap text-sm font-medium">
                   <button
                     v-if="!ticket.assignedTo"
                     @click="assignToMe(ticket.id)"
@@ -171,7 +173,6 @@
                 </td>
               </tr>
             </tbody>
-            c
           </table>
         </div>
         <p v-else class="text-center mt-20 text-indigo-400">
@@ -286,7 +287,7 @@ const assignToMe = async (ticketId) => {
       }
     );
 
-    console.log(response.data)
+    console.log(response.data);
 
     const result = response.data.data.assignTicket;
 

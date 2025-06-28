@@ -1,9 +1,19 @@
 <template>
   <div
-    class="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 flex"
+    class="relative min-h-screen w-full bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 flex"
   >
+    <button
+      class="md:hidden px-2 text-white bg-indigo-700 fixed top-4 left-4 z-50 rounded-lg"
+      @click="isSidebarOpen = !isSidebarOpen"
+    >
+      ☰
+    </button>
     <!-- Sidebar -->
-    <aside class="w-64 bg-white shadow-lg p-6 flex flex-col">
+    <aside
+      class="fixed inset-y-0 left-0 w-64 bg-white shadow-lg p-6 flex flex-col transform transition-transform duration-300 z-40 md:relative md:translate-x-0"
+      :class="{ '-translate-x-full': !isSidebarOpen }"
+    >
+      >
       <h2 class="text-2xl font-extrabold mb-8 text-indigo-700 tracking-wide">
         Support Portal
       </h2>
@@ -14,11 +24,11 @@
     </aside>
 
     <!-- Main -->
-    <main class="flex-1 p-10 relative">
+    <main class="flex-1 p-3 relative">
       <!-- Header -->
       <header class="flex justify-between items-center mb-10">
         <div>
-          <h1 class="text-4xl font-bold text-indigo-900">
+          <h1 class="text-2xl font-bold text-indigo-900">
             Welcome,
             <span class="text-pink-600">{{ user.name || "Loading..." }}</span>
           </h1>
@@ -28,7 +38,7 @@
         </div>
         <button
           @click="logout"
-          class="px-5 py-2 rounded-lg bg-pink-600 hover:bg-pink-700 text-white font-semibold shadow-md transition"
+          class="px-3 py-1 rounded-lg bg-pink-600 hover:bg-gray-700 text-white shadow-md transition"
         >
           Logout
         </button>
@@ -61,37 +71,22 @@
       <!-- Tickets Section -->
       <section v-else>
         <div class="flex justify-between items-center mb-6">
-          <h2 class="text-3xl font-semibold text-indigo-800">Your Tickets</h2>
+          <h2 class="text-xl md:text-2xl font-semibold text-indigo-800">Your Tickets</h2>
           <button
             @click="showCreateTicket = true"
-            class="px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 font-semibold shadow-lg transition flex items-center"
+            class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 font-semibold shadow-lg transition flex items-center text-sm"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-5 w-5 mr-2"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
-                clip-rule="evenodd"
-              />
-            </svg>
-            Create Ticket
+            + Create Ticket
           </button>
         </div>
 
-        <div
-          v-if="tickets?.length"
-          class="grid grid-cols-1 md:grid-cols-2 gap-8"
-        >
+        <div v-if="tickets?.length" class="grid lg:grid-cols-2 xl:grid-cols-3 gap-3">
           <article
             v-for="ticket in tickets"
             :key="ticket.id"
-            class="bg-white rounded-xl shadow-lg p-6 border-l-8 border-pink-500 hover:shadow-xl transition-shadow"
+            class="bg-white rounded-xl shadow-lg p-2 border-l-8 border-pink-500 hover:shadow-xl transition-shadow"
           >
-            <h3 class="text-2xl font-semibold mb-3 text-indigo-900">
+            <h3 class="text-1xl font-semibold mb-1 text-indigo-900">
               {{ ticket.title }}
             </h3>
             <p class="text-indigo-700 mb-5">{{ ticket.title }}</p>
@@ -113,17 +108,14 @@
 
             <button
               @click="openCommentModal(ticket.id)"
-              class="mt-4 px-4 py-2 bg-pink-500 text-white rounded hover:bg-pink-600 text-sm font-medium shadow"
+              class="mt-4 px-2 py-1 bg-pink-500 text-white rounded hover:bg-pink-600 text-sm font-medium shadow"
             >
               Comment
             </button>
           </article>
         </div>
-
-      
       </section>
 
-      <!-- Create Ticket Modal -->
       <transition name="modal-fade">
         <div
           v-if="showCreateTicket"
@@ -241,6 +233,8 @@ const logout = () => {
   localStorage.removeItem("role");
   window.location.href = "/";
 };
+
+const isSidebarOpen = ref(false);
 
 onMounted(fetchDashboardData);
 </script>
